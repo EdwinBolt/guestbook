@@ -45,6 +45,7 @@ class DashboardController extends AbstractDashboardController
 //
 //        ];
 
+        yield MenuItem::linkToUrl('Home', 'fa fa-home', '/');
         yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');
         // yield MenuItem::linkToCrud('The Label', 'icon class', EntityClass::class);
         // links to the 'index' action of the Comments CRUD controller
