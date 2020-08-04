@@ -1,0 +1,16 @@
+easy_admin:
+    entities:
+        - App\Entity\Conference
+        - App\Entity\Comment
+
+#
+#easy_admin:
+#    design:
+#        menu:
+#            - { entity: 'Conference', label: 'Conferences', icon: 'map-marker'}
+#            - { entity: 'Comment', label: 'Comments', icon: 'comments'}
+#    entities:
+#        Conference:
+#            class: App\Entity\Conference
+#        Comment:
+#            class: App\Entity\Comment
