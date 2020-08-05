@@ -2,6 +2,8 @@
 
 namespace App\tests\Controller;
 
+use App\Repository\CommentRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 Class ConferenceControllerTest extends WebTestCase
@@ -23,10 +25,16 @@ Class ConferenceControllerTest extends WebTestCase
         $client->submitForm('Submit',[
             'comment_form[author]'=>'Edwin',
             'comment_form[text]'=>'Auto text voor test',
-            'comment_form[email]'=>'auto@test.optiwise',
+            'comment_form[email]'=>$email='auto@test.optiwise',
             'comment_form[photo]'=>dirname(__DIR__).'/public/images/construction.png',
         ]);
         $this->assertResponseRedirects();
+
+        // simulate validating comment
+        $comment = self::$container->get(CommentRepository::class)->findOneByEmail($email);
+        $comment->setState('published');
+        self::$container->get(EntityManagerInterface::class)->flush();
+
         $client->followRedirect();
         $this->assertSelectorExists('div:contains("There are 5")');
     }
