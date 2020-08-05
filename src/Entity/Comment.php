@@ -54,6 +54,11 @@ class Comment
      */
     private $photoFileName;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $state = 'submitted';
+
 
     /**
      * @ORM\PrePersist
@@ -141,6 +146,18 @@ class Comment
     public function setPhotoFileName(?string $photoFileName): self
     {
         $this->photoFileName = $photoFileName;
+
+        return $this;
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(string $state): self
+    {
+        $this->state = $state;
 
         return $this;
     }

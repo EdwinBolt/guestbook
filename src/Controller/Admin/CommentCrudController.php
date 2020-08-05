@@ -39,8 +39,9 @@ class CommentCrudController extends AbstractCrudController
             EmailField::new('email'),
             DateTimeField::new('createdAt'),
 //            ImageField::new('photoFile')->onlyOnForms(),//->setFormType(VichImageType::class)->setTextAlign('left'),
-//            ImageField::new('photoName')->onlyOnIndex()->setBasePath('/upload/images/'),
+//            ImageField::new('photo')->onlyOnIndex()->setBasePath('/uploads/photos/'),
 //            IntegerField::new('imageSize')
+            TextField::new('state'),
         ];
     }
 
