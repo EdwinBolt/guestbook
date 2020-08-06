@@ -8,15 +8,22 @@ use App\Entity\Conference;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\Security\Core\Encoder\MigratingPasswordEncoder;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
     private $encoderFactory;
+    private UserPasswordEncoderInterface  $userPasswordEncoder;
 
 
-    public function __construct(EncoderFactoryInterface $encoderFactory)
+//    public function __construct(MigratingPasswordEncoder $encoderFactory)
+//    {
+//        $this->encoderFactory = $encoderFactory;
+//    }
+    public function __construct(UserPasswordEncoderInterface $userPasswordEncoder)
     {
-        $this->encoderFactory = $encoderFactory;
+        $this->userPasswordEncoder = $userPasswordEncoder;
     }
 
 
@@ -48,7 +55,7 @@ class AppFixtures extends Fixture
         $admin = new Admin();
         $admin->setRoles(['ROLE_ADMIN']);
         $admin->setUsername('admin');
-        $admin->getPassword($this->encoderFactory->getEncoder(Admin::class)->encodePassword('admin', 'geheim'));
+        $admin->setPassword($this->userPasswordEncoder->encodePassword($admin, 'geheim'));
         $manager->persist($admin);
 
         $manager->flush();

@@ -32,7 +32,7 @@ class Admin implements UserInterface
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
+    private $password='';
 
     public function getId(): ?int
     {
