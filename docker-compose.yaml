@@ -11,4 +11,4 @@ services:
 
   rabbitmq:
     image: rabbitmq:3.7-management
-    ports: [5762, 15672]
+    ports: [5672, 15672]

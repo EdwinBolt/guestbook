@@ -26,11 +26,26 @@
             "./src/DataFixtures/AppFixtures.php"
         ]
     },
+    "egulias/email-validator": {
+        "version": "2.1.18"
+    },
     "php": {
         "version": "7.4"
     },
     "php-webdriver/webdriver": {
         "version": "1.8.2"
+    },
+    "symfony/mailer": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.3",
+            "ref": "15658c2a0176cda2e7dba66276a2030b52bd81b2"
+        },
+        "files": [
+            "./config/packages/mailer.yaml"
+        ]
     },
     "symfony/messenger": {
         "version": "4.3",
@@ -64,5 +79,17 @@
     },
     "symfony/process": {
         "version": "v5.0.11"
+    },
+    "symfony/workflow": {
+        "version": "3.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.3",
+            "ref": "3b2f8ca32a07fcb00f899649053943fa3d8bbfb6"
+        },
+        "files": [
+            "./config/packages/workflow.yaml"
+        ]
     }
 }
