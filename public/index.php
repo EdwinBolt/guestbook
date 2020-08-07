@@ -1,6 +1,7 @@
 <?php
 
 use App\Kernel;
+use Symfony\Bundle\FrameworkBundle\HttpCache\HttpCache;
 use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -20,6 +21,10 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? false) {
     Request::setTrustedHosts([$trustedHosts]);
 }
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+
+if ('dev' === $kernel->getEnvironment()){
+    $kernel = new HttpCache($kernel);
+}
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();
