@@ -4,15 +4,19 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Message\CommentMessage;
+use App\Notification\CommentReviewNotification;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\NotificationEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpCache\HttpCache;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Workflow\Registry;
+use Symfony\Component\Workflow\WorkflowInterface;
 use Twig\Environment;
 
 /**
@@ -24,12 +28,16 @@ class AdminController extends AbstractController
     private $twig;
     private $entityManager;
     private $bus;
+    private $workflow;
+    private $mailer;
 
-    public function __construct(Environment $twig, EntityManagerInterface $entityManager, MessageBusInterface $bus)
+    public function __construct(Environment $twig, EntityManagerInterface $entityManager, MessageBusInterface $bus, WorkflowInterface $commentStateMachine, MailerInterface $mailer)
     {
         $this->twig = $twig;
         $this->entityManager = $entityManager;
         $this->bus = $bus;
+        $this->workflow = $commentStateMachine;
+        $this->mailer = $mailer;
     }
 
     /**
@@ -42,8 +50,22 @@ class AdminController extends AbstractController
         $machine = $registry->get($comment);
         if ($machine->can($comment, 'publish')) {
             $transition = $accepted ? 'publish' : 'reject';
+            $this->mailer->send((new NotificationEmail())
+                ->subject('comment accepted')
+                ->htmlTemplate('emails/confirmation_mail_to_commenter.html.twig')
+                ->from('admin@example.nl')
+                ->to($comment->getEmail())
+                ->context(['comment' => $comment])
+            );
         } elseif ($machine->can($comment, 'publish_ham')) {
             $transition = $accepted ? 'publish_ham' : 'reject_ham';
+            $this->mailer->send((new NotificationEmail())
+                ->subject('comment accepted')
+                ->htmlTemplate('emails/confirmation_mail_to_commenter.html.twig')
+                ->from('admin@example.nl')
+                ->to($comment->getEmail())
+                ->context(['comment' => $comment])
+            );
         } else {
             return new Response('Comment already reviewed or not in the right state.');
         }

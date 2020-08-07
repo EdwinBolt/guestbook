@@ -14,7 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
 class DashboardController extends AbstractDashboardController
 {
     /**
-     * @Route("/admin", name="admin")
+     * @Route("/admin", name="easyadmin")
      */
     public function index(): Response
     {
