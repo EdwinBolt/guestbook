@@ -8,16 +8,10 @@ use App\Notification\CommentReviewNotification;
 use App\Repository\CommentRepository;
 use App\SpamChecker;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Types\This;
 use Psr\Log\LoggerInterface;
-use Symfony\Bridge\Twig\Mime\NotificationEmail;
-
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\NotifierInterface;
-use Symfony\Component\Notifier\Recipient\Recipient;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 
@@ -82,7 +76,7 @@ class CommentMessageHandler implements MessageHandlerInterface{
 //                ->context(['comment' => $comment])
 //            );
 
-            $this->notifier->send(new CommentReviewNotification($comment),$this->notifier->getAdminRecipients());
+            $this->notifier->send(new CommentReviewNotification($comment),...$this->notifier->getAdminRecipients());
 
 
 
